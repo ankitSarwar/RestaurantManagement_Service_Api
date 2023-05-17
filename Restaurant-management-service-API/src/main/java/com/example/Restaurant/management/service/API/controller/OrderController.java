@@ -50,9 +50,9 @@ public class OrderController {
         return order.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<Orders> updateOrder(@RequestBody Orders order) {
-        Orders updatedOrder = orderService.updateOrder(order);
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Orders> updateOrder(@PathVariable Long id,@RequestBody Orders order) {
+        Orders updatedOrder = orderService.updateOrder(id,order);
         return ResponseEntity.ok(updatedOrder);
     }
 

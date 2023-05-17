@@ -20,21 +20,6 @@ public class OrderService {
     IUserRepository userRepository;
 
     public Orders createOrder(Orders order) {
-        // Perform any validation or additional logic here
-//        User user=userRepository.findFirstByUserContact(order.getUser().getUserContact());
-
-//        if(user!=null){
-//            throw new IllegalStateException("user does not exists!!!");
-//        }
-
-
-//        Integer addressID = myOrder.getOrderAddress().getAddressId();
-//        Address myAddress  = iAddressRepo.findByAddressId(addressID);
-
-//        boolean ans=userRepository.existsById(order.getUser().getId());
-//        if(!ans){
-//            throw new IllegalStateException("user does not exists!!!");
-//        }
 
         Long userId = order.getUser().getUserId();
         User myUser = userRepository.findByUserId(userId);
@@ -59,11 +44,23 @@ public class OrderService {
     }
 
     public void deleteOrder(Long id) {
-        orderRepository.deleteById(id);
+        Optional<Orders> orderDelete=orderRepository.findById(id);
+        if(orderDelete.isPresent()){
+            orderRepository.delete(orderDelete.get());
+        }
+//        orderRepository.deleteById(id);
     }
 
-    public Orders updateOrder(Orders order) {
-        // Perform any validation or additional logic here
+    public Orders updateOrder(Long id,Orders order) {
+        Optional<Orders> existById=orderRepository.findById(id);
+        if(existById.isPresent()){
+            Orders order1= existById.get();
+            order1.setUser(order.getUser());
+            order1.setStatus(order.getStatus());
+            order1.setCreatedDateTime(order.getCreatedDateTime());
+            order1.setQuantity(order.getQuantity());
+            order1.setFoodItem(order.getFoodItem());
+        }
         return orderRepository.save(order);
     }
 }

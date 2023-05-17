@@ -16,7 +16,7 @@ public class AdminController {
     @Autowired
     AdminService adminService;
 
-    @PostMapping(value = "AddAdmin")
+    @PostMapping(value = "/AddAdmin")
     public Admin addAdmin(@RequestBody Admin admin){
         return adminService.addAdmin(admin);
     }
