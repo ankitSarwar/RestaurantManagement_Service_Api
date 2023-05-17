@@ -6,11 +6,11 @@ import com.example.Restaurant.management.service.API.dto.SignUpInput;
 import com.example.Restaurant.management.service.API.dto.SignUpOutput;
 import com.example.Restaurant.management.service.API.model.AuthenticationToken;
 import com.example.Restaurant.management.service.API.model.User;
-import com.example.Restaurant.management.service.API.repository.ITokenRepo;
 import com.example.Restaurant.management.service.API.repository.IUserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.xml.bind.DatatypeConverter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.security.MessageDigest;
@@ -34,6 +34,9 @@ public class UserService {
         return userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Restaurant not found with id: " + id));
     }
+
+
+
 
     public SignUpOutput signup(SignUpInput signUpInput) {
         User user=userRepository.findFirstByuserContact(signUpInput.getUserContact());
@@ -109,6 +112,11 @@ public class UserService {
     public void deleteUser(Long id) {
         User user = getUserById(id);
         userRepository.delete(user);
+    }
+
+    public List<User> AllUser() {
+
+        return userRepository.findAll();
     }
 }
 

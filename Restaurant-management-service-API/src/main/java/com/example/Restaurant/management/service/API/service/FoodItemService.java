@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FoodItemService {
@@ -27,25 +28,31 @@ public class FoodItemService {
         return foodItemRepository.findById(id).orElse(null);
     }
 
-    public void deleteFoodItem(Long id) {
-        foodItemRepository.deleteById(id);
-    }
-
-
-    public FoodItem updateFoodItem(FoodItem foodItem) {
-        // Check if the food item exists
-        FoodItem existingFoodItem = foodItemRepository.findById(foodItem.getId()).orElse(null);
-        if (existingFoodItem == null) {
-            return null; // Return null if the food item doesn't exist
+    public String  deleteFoodItem(Long id) {
+        if(id !=null) {
+            foodItemRepository.deleteById(id);
+            return "Deleted!!!";
         }
-
-        // Update the fields of the existing food item
-        existingFoodItem.setTitle(foodItem.getTitle());
-        existingFoodItem.setDescription(foodItem.getDescription());
-        existingFoodItem.setPrice(foodItem.getPrice());
-
-        // Save the updated food item
-        return foodItemRepository.save(existingFoodItem);
+        else{
+            return "Id not exists!!!";
+        }
     }
+
+
+    public FoodItem updateFoodItem(Long foodId, FoodItem foodItem) {
+        Optional<FoodItem> existingFood = foodItemRepository.findById(foodId);
+        if(existingFood.isPresent()){
+            FoodItem foodItem1=existingFood.get();
+            foodItem1.setTitle(foodItem.getTitle());
+            foodItem1.setPrice(foodItem.getPrice());
+            foodItem1.setDescription(foodItem.getDescription());
+            foodItem1.setDummyImageUrl(foodItem.getDummyImageUrl());
+            foodItem1.setCreatedDateTime(foodItem.getCreatedDateTime());
+            return foodItemRepository.save(foodItem1);
+        }
+            return null;
+    }
+
+
 
 }

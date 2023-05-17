@@ -20,4 +20,26 @@ public class TokenService {
        return tokenRepo.findByUser(user);
     }
 
+    public boolean authenticate(String email, String token) {
+
+        if(token==null && email==null){
+            return false;
+        }
+
+        AuthenticationToken authToken = tokenRepo.findFirstByToken(token);
+
+        if(authToken==null){
+            return false;
+        }
+
+        String expectedEmail = authToken.getUser().getEmail();
+
+
+        return expectedEmail.equals(email);
+    }
+
+
+    public User findUserByToken(String token) {
+        return tokenRepo.findFirstByToken(token).getUser();
+    }
 }

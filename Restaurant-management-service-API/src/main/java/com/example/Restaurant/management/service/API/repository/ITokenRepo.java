@@ -9,4 +9,6 @@ public interface ITokenRepo  extends JpaRepository<AuthenticationToken, Long> {
 
     AuthenticationToken findByUser(User user);
 
+    AuthenticationToken findFirstByToken(String token);
+
 }

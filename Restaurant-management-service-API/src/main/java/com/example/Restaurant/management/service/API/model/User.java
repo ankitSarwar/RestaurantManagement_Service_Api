@@ -32,7 +32,4 @@ public class User {
         this.userContact = userContact;
     }
 
-//    @OneToMany(cascade = CascadeType.ALL,mappedBy = "user")
-//    private List<Orders> orders;
-
 }

@@ -3,6 +3,7 @@ package com.example.Restaurant.management.service.API.controller;
 import com.example.Restaurant.management.service.API.model.FoodItem;
 import com.example.Restaurant.management.service.API.service.FoodItemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,19 +36,29 @@ public class FoodItemController {
         return ResponseEntity.ok(foodItems);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<FoodItem> updateFoodItem(@RequestBody FoodItem foodItem) {
-        FoodItem updatedFoodItem = foodItemService.updateFoodItem(foodItem);
-        if (updatedFoodItem != null) {
-            return ResponseEntity.ok(updatedFoodItem);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    @PutMapping("/update/{foodId}")
+    public ResponseEntity<FoodItem> updateFoodItem(@PathVariable Long foodId,@RequestBody FoodItem foodItem) {
+        FoodItem updatedFoodItem = foodItemService.updateFoodItem(foodId,foodItem);
+        return updatedFoodItem != null
+                ? new ResponseEntity<>(updatedFoodItem, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteFoodItem(@PathVariable Long id) {
-        foodItemService.deleteFoodItem(id);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<String> deleteFoodItem(@PathVariable Long id) {
+        HttpStatus status;
+        String msg="";
+        try {
+            foodItemService.deleteFoodItem(id);
+            status=HttpStatus.OK;
+            msg="Food Item deleted!!!";
+        }
+        catch (Exception e) {
+            status=HttpStatus.NOT_FOUND;
+            msg="Food Item Not deleted!!!";
+        }
+
+        return new ResponseEntity<String>(msg,status);
     }
 }

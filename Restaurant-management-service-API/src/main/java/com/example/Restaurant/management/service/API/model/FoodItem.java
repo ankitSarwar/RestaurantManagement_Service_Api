@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public class FoodItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long foodId;
 
     @Enumerated(EnumType.STRING)
     private FoodTitle title;
